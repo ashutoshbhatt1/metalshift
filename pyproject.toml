@@ -1,0 +1,26 @@
+[project]
+name = "metalshift"
+version = "0.1.0"
+description = "Vendor-neutral bare metal and network lifecycle automation with pytest"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+test = [
+  "pytest>=7.4.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-q --strict-markers --tb=short -p no:cacheprovider"
+markers = [
+  "smoke: quick framework and fixture validation",
+  "lifecycle: bare-metal lifecycle workflows",
+  "e2e: end-to-end orchestration workflows",
+  "network: physical, LACP, VLAN, IP pool, and connectivity workflows",
+  "reporting: report artifact validation",
+]
