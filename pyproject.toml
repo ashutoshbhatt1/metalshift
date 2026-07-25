@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "metalshift"
 version = "0.1.0"
@@ -8,8 +12,18 @@ dependencies = []
 
 [project.optional-dependencies]
 test = [
+  "mypy>=1.10",
+  "playwright>=1.45",
   "pytest>=7.4.0",
+  "pytest-playwright>=0.5",
+  "ruff>=0.5",
 ]
+
+[project.scripts]
+metalshift-dashboard = "metalshift.dashboard:main"
+
+[tool.setuptools.packages.find]
+include = ["framework*", "metalshift*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -23,4 +37,23 @@ markers = [
   "e2e: end-to-end orchestration workflows",
   "network: physical, LACP, VLAN, IP pool, and connectivity workflows",
   "reporting: report artifact validation",
+  "browser: Playwright validation of the operator dashboard",
 ]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.10"
+check_untyped_defs = true
+warn_unused_configs = true
+exclude = ["tests/"]
+
+[[tool.mypy.overrides]]
+module = ["metalshift.dashboard"]
+strict = true

@@ -1,8 +1,8 @@
 """JSON report aggregation for MetalShift workflows."""
 
+import json
 from dataclasses import dataclass, field
 from datetime import datetime
-import json
 from pathlib import Path
 from typing import Dict, List, Optional
 
