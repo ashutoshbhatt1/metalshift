@@ -1,12 +1,18 @@
 """Atomic network operations."""
 
-from typing import Dict
-
 from framework.test_base import TestBase
+from metalshift.clients.network_client import NetworkClient
+from metalshift.contracts import NetworkValidationResult
+from metalshift.models.base import NetworkSpec
 
 
 class NetworkTests(TestBase):
-    def configure_network(self, network_client, network, host_name: str) -> Dict[str, object]:
+    def configure_network(
+        self,
+        network_client: NetworkClient,
+        network: NetworkSpec,
+        host_name: str,
+    ) -> NetworkValidationResult:
         self.info("Configuring network %s", network.name)
         ports = network_client.configure_physical_ports(network.switch_ports, state="trunk")
         bond = network_client.configure_lacp_bond(network.bond_name, network.interfaces)

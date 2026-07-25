@@ -22,6 +22,7 @@ flowchart LR
     Fixtures --> Lifecycle["Bare Metal Lifecycle Checks"]
     Fixtures --> Network["Network Readiness Checks"]
     Fixtures --> Reporting["Report Builder"]
+    Fixtures --> Dashboard["Synthetic Operator Dashboard"]
 
     Lifecycle --> BMC["Redfish-style BMC Client"]
     Lifecycle --> API["Lifecycle API Client"]
@@ -39,8 +40,11 @@ flowchart LR
     VLANs --> Evidence
     Pools --> Evidence
     Reachability --> Evidence
+    Dashboard --> Evidence
     Evidence --> Reporting
     Reporting --> Summary["Executive-ready Report"]
+    Playwright["Playwright Browser Validation"] --> Dashboard
+    Playwright --> CI["GitHub Actions Evidence"]
 ```
 
 ## Key Layers
@@ -60,6 +64,16 @@ checks are validated alongside server readiness.
 **Reporting layer:** Results are collected as structured evidence and converted
 into concise summaries for engineering handoff, release review, or leadership
 updates.
+
+**Presentation and browser-validation layer:** A dependency-free HTTP dashboard
+projects MetalShift's synthetic environment inventory into operator-facing
+readiness evidence. Playwright checks the rendered status, asynchronous API data,
+semantic roles, and screenshot output in a real Chromium browser.
+
+**CI quality layer:** Ruff and MyPy guard maintainability while PyTest runs
+unit, network, lifecycle, reporting, and end-to-end checks across supported
+Python versions. JUnit XML, screenshots, and browser traces are retained as
+reviewable build evidence.
 
 ## Extensibility
 

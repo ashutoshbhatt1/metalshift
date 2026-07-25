@@ -1,6 +1,8 @@
 """Shared pytest fixtures for MetalShift."""
 
+from collections.abc import Generator
 from pathlib import Path
+from threading import Thread
 
 import pytest
 
@@ -10,6 +12,7 @@ from metalshift.clients.api_client import APIClient
 from metalshift.clients.auth_client import AuthClient
 from metalshift.clients.network_client import NetworkClient
 from metalshift.clients.redfish_client import RedfishClient
+from metalshift.dashboard import create_server
 from metalshift.models.environments import all_environment_data, lab_a_data
 
 
@@ -56,3 +59,17 @@ def redfish_client():
 @pytest.fixture
 def network_client():
     return NetworkClient()
+
+
+@pytest.fixture
+def dashboard_server() -> Generator[tuple[str, int], None, None]:
+    server = create_server()
+    host, port = server.server_address
+    thread = Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        yield str(host), int(port)
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=2)
