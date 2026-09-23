@@ -62,7 +62,7 @@ metalshift/
   links, VLAN membership, address pool allocation, and end-to-end reachability.
 - Exercise lifecycle workflows while keeping test output readable for engineers
   and leaders.
-- Produce recruiter-friendly artifacts that explain the automation approach,
+- Artifacts that explain the automation approach,
   tradeoffs, and roadmap without exposing proprietary environments.
 
 ## Documentation
